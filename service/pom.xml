@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.omsalung</groupId>
-    <artifactId>backend</artifactId>
+    <artifactId>service</artifactId>
     <version>1.0-SNAPSHORT</version>
     <packaging>war</packaging>
 
-    <name>backend</name>
+    <name>service</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
