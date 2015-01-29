@@ -43,7 +43,7 @@ public class IncomeCtrl {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/api/v1/income/tabs", method = RequestMethod.GET)
+    @RequestMapping(value = "/income/tabs", method = RequestMethod.GET)
     public JsonResponse getIncomeTab() {
         JsonResponse response = new JsonResponse();
         response.setData(findTabs());
