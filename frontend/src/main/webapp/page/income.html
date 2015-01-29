@@ -1,0 +1,108 @@
+<div class="os-search-toolbar"></div>
+<div class="os-container">
+    <div class="os-container-header">
+        <div class="os-container-header-title">รายรับ</div>
+    </div>
+    <div class="os-income-container">
+        <div class="os-income-header">
+            <ul class="os-income-header-menu" ng-controller="IncomeTabCtrl">
+                <li ng-repeat="tab in tabs| orderBy:'order'" class="{{tab.active ? 'active-tab' : ''}}">
+                    <a href="{{tab.link}}">{{tab.title}}</a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="os-income-body">
+
+        </div>
+    </div>
+    <div class="os-container-footer"></div>
+</div>
+
+<style>
+    .os-search-toolbar{
+        background-color: #fdfdfd;
+        height: 80px;
+        width: 100%;
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    a{
+        color : #3297fd;
+    }
+
+    .clear{
+        clear: both;
+    }
+
+    li{
+        list-style-type: none;
+    }
+
+    .os-container{
+        width: 1000px;
+        min-height: 200px;
+        position: relative;
+        left : 50%;
+        margin-left: -500px;
+    }
+
+    .os-container-header{
+        height: 50px;
+        background-color: #fff;
+    }
+    
+    .os-container-header-title{
+        font-size: 20pt;
+        font-weight: bold;
+        line-height: 50px;
+        padding: 0 20px;
+    }
+
+    .os-income-header{
+        margin-left: -1px;
+    }
+
+    .os-income-header-menu{
+        padding: 0;
+    }
+
+    .os-income-header-menu li{
+        float: left;
+    }
+
+    .os-income-header-menu li a{
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        padding: 0 15px;
+        line-height: 30px;
+        min-width: 80px;
+        text-align: center;
+        background-color: #fdfdfd;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        border-right: 1px solid #eee;
+        color : #666;
+    }
+
+    .os-income-header-menu li.active-tab a{
+        color : #3297fd;
+        background-color: #fff;
+    }
+
+    .os-income-header-menu li:first-child a{
+        border-left: 1px solid #eee;
+    }
+
+    .os-income-body{
+        min-height: 200px;
+        background-color: #fdfdfd;
+    }
+
+    .os-container-footer{
+        height: 100px;
+        background-color: #fff;
+        border-top: solid 1px #f2f2f2;
+    }
+</style>
