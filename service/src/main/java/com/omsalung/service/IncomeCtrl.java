@@ -45,10 +45,6 @@ public class IncomeCtrl {
     @ResponseBody
     @RequestMapping(value = "/income/tabs", method = RequestMethod.GET)
     public JsonResponse getIncomeTab() {
-        JsonResponse response = new JsonResponse();
-        response.setData(findTabs());
-        response.setResponseTime(new Date().getTime());
-        response.setStatusCode(200);
-        return response;
+        return JsonResponse.fromData(findTabs());
     }
 }
