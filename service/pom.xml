@@ -16,6 +16,12 @@
     
     <dependencies>
         <dependency>
+            <groupId>com.omsalung</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0-SNAPSHORT</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>3.2.3.RELEASE</version>

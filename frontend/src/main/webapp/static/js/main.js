@@ -1,29 +1,82 @@
+/**
+ * @author jittagorn pitakmetagoon
+ */
+
 var omsalung = angular.module('omsalung', [
     'ngRoute'
 ]);
+
+omsalung.factory('context', function() {
+    return {
+        contextPath: '/frontend',
+        serviceApiUrl: '/service'
+    };
+});
 
 omsalung.config([
     '$routeProvider',
     '$locationProvider',
     function($routeProvider, $locationProvider) {
+        var contextPath = '/frontend';
+
         $routeProvider
                 .when('/', {
-                    templateUrl: '/omsalung/page/main.html'
+                    templateUrl: contextPath + '/page/main.html'
                 })
                 .when('/income', {
-                    templateUrl: '/omsalung/page/income.html'
+                    templateUrl: contextPath + '/page/income.html'
                 })
-                .when('/income/:tabName', {
-                    templateUrl: '/omsalung/page/income.html'
+                .when('/income/:tabId', {
+                    templateUrl: contextPath + '/page/income.html'
                 });
 
         $locationProvider
                 .html5Mode(false)
                 .hashPrefix('!');
-
     }
 ]);
 
+//service ----------------------------------------------------------------------
+omsalung.factory('IncomeService', [
+    '$http',
+    '$rootScope',
+    'context',
+    function($http, $rootScope, context) {
+
+        var tabs;
+
+        reloadTabOnUrlIsIncome();
+        function reloadTabOnUrlIsIncome() {
+
+            function isIncome(url) {
+                return url === '/income';
+            }
+
+            $rootScope.$on('$routeChangeStart', function(event, next, current) {
+                if (isIncome(next.$$route.originalPath)) {
+                    tabs = undefined;
+                }
+            });
+        }
+
+        return {
+            findAllTabs: function(callback) {
+                if (!tabs) {
+                    $http.get(context.serviceApiUrl + '/api/v1/income/tabs')
+                            .success(function(data) {
+                                tabs = data;
+                                callback(tabs);
+                            });
+                } else {
+                    return callback(tabs);
+                }
+            }
+        };
+    }
+]);
+
+
+//controller ------------------------------------------------------------------- 
 omsalung.controller('mainCtrl', [
     '$scope',
     function($scope) {
@@ -31,55 +84,25 @@ omsalung.controller('mainCtrl', [
     }
 ]);
 
-omsalung.controller('IncomeTabCtrl', [
+omsalung.controller('IncomeCtrl', [
     '$scope',
     '$routeParams',
-    function($scope, $routeParams) {
-        $scope.tabs = [
-            {
-                title: 'วัน',
-                name: 'day',
-                link: '#!/income/day',
-                order : 1
-            },
-            {
-                title: 'สัปดาห์',
-                name: 'week',
-                link: '#!/income/week',
-                order : 2
-            },
-            {
-                title: 'เดือน',
-                name: 'month',
-                link: '#!/income/month',
-                order : 3
-            },
-            {
-                title: 'ปี',
-                name: 'year',
-                link: '#!/income/year',
-                order : 4
-            },
-            {
-                title: 'ทั้งหมด',
-                name: 'all',
-                link: '#!/income/all',
-                order : 5
-            }
-        ];
-        
-        checkActive($scope.tabs, $routeParams.tabName);
+    'IncomeService',
+    function($scope, $routeParams, incomeService) {
+        incomeService.findAllTabs(function(data) {
+            $scope.tabs = data;
+            checkActive($scope.tabs, $routeParams.tabId);
+        });
 
-        function checkActive(tabs, tabName) {
-            angular.forEach(tabs, function(value, key) {
-                if (value.name === tabName || (tabName === undefined && value.order === 1)) {
-                    value.active = true;
-                } 
-            });
+        function isActiveTab(tab, tabId) {
+            return tab.id === tabId
+                    || (tabId === undefined && tab.order === 1);
         }
 
-        $scope.$on('$routeChangeStart', function(event, current, old) {
-            checkActive($scope.tabs, current.params.tabName);
-        });
+        function checkActive(tabs, tabId) {
+            angular.forEach(tabs, function(value, key) {
+                value.active = isActiveTab(value, tabId);
+            });
+        }
     }
 ]);

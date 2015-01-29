@@ -5,6 +5,9 @@
  */
 package com.omsalung.service;
 
+import com.omsalung.api.IXTab;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,40 +20,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IncomeTabCtrl {
 
+    private IXTab createTab(String id, String title, String link, int order) {
+        IXTab tab = new IXTab();
+        tab.setId(id);
+        tab.setTitle(title);
+        tab.setLink(link);
+        tab.setOrder(order);
+
+        return tab;
+    }
+
+    private List<IXTab> findTabs() {
+        List<IXTab> tabs = new ArrayList<>();
+        tabs.add(createTab("day", "วัน", "#!/income/day", 1));
+        tabs.add(createTab("week", "สัปดาห์", "#!/income/week", 2));
+        tabs.add(createTab("month", "เดือน", "#!/income/month", 3));
+        tabs.add(createTab("year", "ปี", "#!/income/year", 4));
+        tabs.add(createTab("all", "ทั้งหมด", "#!/income/all", 5));
+        return tabs;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/api/v1/income/tabs", method = RequestMethod.GET)
-    public String getIncomeTab() {
-        return "[\n"
-                + "            {\n"
-                + "                title: 'วัน',\n"
-                + "                name: 'day',\n"
-                + "                link: '#!/income/day',\n"
-                + "                order : 1\n"
-                + "            },\n"
-                + "            {\n"
-                + "                title: 'สัปดาห์',\n"
-                + "                name: 'week',\n"
-                + "                link: '#!/income/week',\n"
-                + "                order : 2\n"
-                + "            },\n"
-                + "            {\n"
-                + "                title: 'เดือน',\n"
-                + "                name: 'month',\n"
-                + "                link: '#!/income/month',\n"
-                + "                order : 3\n"
-                + "            },\n"
-                + "            {\n"
-                + "                title: 'ปี',\n"
-                + "                name: 'year',\n"
-                + "                link: '#!/income/year',\n"
-                + "                order : 4\n"
-                + "            },\n"
-                + "            {\n"
-                + "                title: 'ทั้งหมด',\n"
-                + "                name: 'all',\n"
-                + "                link: '#!/income/all',\n"
-                + "                order : 5\n"
-                + "            }\n"
-                + "        ]";
+    public List<IXTab> getIncomeTab() {
+        return findTabs();
     }
 }
