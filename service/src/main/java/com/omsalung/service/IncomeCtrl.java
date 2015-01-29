@@ -6,7 +6,9 @@
 package com.omsalung.service;
 
 import com.omsalung.api.IXTab;
+import com.omsalung.api.JsonResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author anonymous
  */
 @Controller
-public class IncomeTabCtrl {
+public class IncomeCtrl {
 
     private IXTab createTab(String id, String title, String link, int order) {
         IXTab tab = new IXTab();
@@ -42,7 +44,11 @@ public class IncomeTabCtrl {
 
     @ResponseBody
     @RequestMapping(value = "/api/v1/income/tabs", method = RequestMethod.GET)
-    public List<IXTab> getIncomeTab() {
-        return findTabs();
+    public JsonResponse getIncomeTab() {
+        JsonResponse response = new JsonResponse();
+        response.setData(findTabs());
+        response.setResponseTime(new Date().getTime());
+        response.setStatusCode(200);
+        return response;
     }
 }

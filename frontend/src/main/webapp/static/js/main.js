@@ -2,17 +2,6 @@
  * @author jittagorn pitakmetagoon
  */
 
-var omsalung = angular.module('omsalung', [
-    'ngRoute'
-]);
-
-omsalung.factory('context', function() {
-    return {
-        contextPath: '/frontend',
-        serviceApiUrl: '/service'
-    };
-});
-
 omsalung.config([
     '$routeProvider',
     '$locationProvider',
@@ -62,9 +51,10 @@ omsalung.factory('IncomeService', [
         return {
             findAllTabs: function(callback) {
                 if (!tabs) {
-                    $http.get(context.serviceApiUrl + '/api/v1/income/tabs')
+                    $http.get(context.serviceApiUrl + '/income/tabs')
                             .success(function(data) {
-                                tabs = data;
+                                console.log(data);
+                                tabs = data.data;
                                 callback(tabs);
                             });
                 } else {
